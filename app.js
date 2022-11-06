@@ -23,8 +23,10 @@ app.use(session({
 }));
 
 var loginRouter = require('./routes/manager');
+var medicine_time_Router = require('./routes/medicine_time');
 
 app.use('/manager', loginRouter);
+app.use('/medicineTime', medicine_time_Router);
 
 app.get('/',(req,res)=>{
     console.log('메인페이지 작동');

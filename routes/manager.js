@@ -31,8 +31,8 @@ router.post('/register',(req,res)=>{
     const e_mail = body.e_mail;
     const phone_num = body.phone_num;
 
-    client.query('select * from userdata where id=?',[id],(err,data)=>{
-        if(data == null){
+    client.query('select * from manager where id=?',[id],(err,data)=>{
+        if(data.length == 0){ //중복되는 id가 없으면 가입 성공
             console.log('회원가입 성공');
             client.query('insert into manager(id, name, phone_num, e_mail, password) values(?,?,?,?,?)',[
                 id, name, phone_num, e_mail, password
