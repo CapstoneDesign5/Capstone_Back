@@ -12,7 +12,7 @@ router.post('/input',(req,res)=>{
         client.query('select * from medicine_time where RRN=? and time=? and date=?',[RRN,time,date],(err,data)=>{
             if(data.length == 0){ 
                 console.log('복용 시간이 입력되었습니다.');
-                client.query('insert into medicine_time(RRN, time, date, medecine) values(?,?,?,?)',[
+                const result = client.query('insert into medicine_time(RRN, time, date, medecine) values(?,?,?,?)',[
                     RRN, time, date, medecine
                 ]);
             }else{  //중복된 데이터 값은 입력 불가
@@ -46,6 +46,17 @@ router.post('/delete',(req,res)=>{
     }else{
         res.send('로그인이 필요합니다.');
     }
+});
+
+router.get('/list', (req,res)=>{
+    if(req.session.is_logined == true){
+        client.query('select * from medicine_time',(err,data)=>{
+            res.json(data);
+        })
+    }
+    else {
+        res.send('로그인이 필요합니다.');
+    };
 });
 
 module.exports = router;

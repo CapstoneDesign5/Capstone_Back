@@ -16,6 +16,7 @@ router.post('/login',(req,res)=>{
             req.session.save(function(){ // 세션 스토어에 적용하는 작업
                 console.log(req.session);
             });
+            res.send(req.session.is_logined);
         }else{
             console.log('로그인 실패');
         }
@@ -34,7 +35,7 @@ router.post('/register',(req,res)=>{
     client.query('select * from manager where id=?',[id],(err,data)=>{
         if(data.length == 0){ //중복되는 id가 없으면 가입 성공
             console.log('회원가입 성공');
-            client.query('insert into manager(id, name, phone_num, e_mail, password) values(?,?,?,?,?)',[
+            const result = client.query('insert into manager(id, name, phone_num, e_mail, password) values(?,?,?,?,?)',[
                 id, name, phone_num, e_mail, password
             ]);
         }else{
