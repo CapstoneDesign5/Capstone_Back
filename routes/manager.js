@@ -16,7 +16,7 @@ router.post('/login',(req,res)=>{
             req.session.save(function(){ // 세션 스토어에 적용하는 작업
                 console.log(req.session);
             });
-            res.send(req.session.is_logined);
+            res.send(req.session);
         }else{
             console.log('로그인 실패');
         }

@@ -30,16 +30,6 @@ app.use('/manager', loginRouter);
 app.use('/medicineTime', medicine_time_Router);
 app.use('/medicineManagement', medicine_management_Router);
 
-app.get('/',(req,res)=>{
-    console.log('메인페이지 작동');
-    console.log(req.session);
-    if(req.session.is_logined == true){
-       res.send('로그인되었습니다.')
-    }else{
-       res.send('로그인 하세요')
-    }
-});
-
 app.listen(port,() => {
     console.log('서버 실행');
 })
