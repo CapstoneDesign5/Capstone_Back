@@ -1,6 +1,7 @@
 const fs = require('fs');
 const mysql = require('mysql');
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
@@ -9,8 +10,14 @@ const FileStore = require('session-file-store')(session); // 세션을 파일에
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
+let corsOptions = {
+    origin: "*", // 출처 허용 옵션
+    credential: true, // 사용자 인증이 필요한 리소스(쿠키 ..등) 접근
+};
+  
+app.use(cors(corsOptions));
 app.use(express.json({limit: '50mb'}));
 app.use(express.static(path.join(__dirname,'/public')));
 app.use(bodyParser.urlencoded({extended:false})); // 정제 (미들웨어) 5
