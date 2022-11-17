@@ -11,10 +11,11 @@ router.post('/input',(req,res)=>{
 
         client.query('select * from medicine_time where RRN=? and time=? and date=?',[RRN,time,date],(err,data)=>{
             if(data.length == 0){ 
-                console.log('복용 시간이 입력되었습니다.');
                 const result = client.query('insert into medicine_time(RRN, time, date, medecine) values(?,?,?,?)',[
                     RRN, time, date, medecine
                 ]);
+                console.log('복용 시간이 입력되었습니다.');
+                res.send('복용 시간이 입력되었습니다.');
             }else{  //중복된 데이터 값은 입력 불가
                 console.log('복용 시간 입력 실패');
                 res.send('복용 시간 입력에 실패하였습니다.');

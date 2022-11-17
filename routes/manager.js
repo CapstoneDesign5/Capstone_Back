@@ -19,6 +19,7 @@ router.post('/login',(req,res)=>{
             res.send(req.session);
         }else{
             console.log('로그인 실패');
+            res.send('로그인 실패');
         }
     });
 });
@@ -34,10 +35,10 @@ router.post('/register',(req,res)=>{
 
     client.query('select * from manager where id=?',[id],(err,data)=>{
         if(data.length == 0){ //중복되는 id가 없으면 가입 성공
-            console.log('회원가입 성공');
             const result = client.query('insert into manager(id, name, phone_num, e_mail, password) values(?,?,?,?,?)',[
                 id, name, phone_num, e_mail, password
             ]);
+            res.send('회원가입 성공');
         }else{
             console.log('회원가입 실패');
             res.send('회원가입에 실패하였습니다.');
@@ -49,6 +50,7 @@ router.get('/logout', (req, res)=>{
     req.session.destroy(function(err){
         console.log('로그아웃');
     });
+    res.send('로그아웃 성공');
 });
 
 module.exports = router;
