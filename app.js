@@ -25,10 +25,12 @@ app.use(session({
 var loginRouter = require('./routes/manager');
 var medicine_time_Router = require('./routes/medicine_time');
 var medicine_management_Router = require('./routes/medicine_management');
+var customer_Router = require('./routes/customer');
 
 app.use('/manager', loginRouter);
 app.use('/medicineTime', medicine_time_Router);
 app.use('/medicineManagement', medicine_management_Router);
+app.use('/customer', customer_Router);
 
 app.listen(port,() => {
     console.log('서버 실행');
