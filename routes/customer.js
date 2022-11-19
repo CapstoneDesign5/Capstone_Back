@@ -2,19 +2,14 @@ const router = require('express').Router();
 const client = require('../db');
 
 router.get('/list', (req,res)=> {
-    if(req.session.is_logined == true) {
-        client.query(
+    client.query(
         "SELECT * FROM user ",(err, rows, fields)=> {
             res.send(rows);
         }
-        )
-    }else{
-        res.send('로그인이 필요합니다.');
-    }
+    )
 });
 
 router.post('/register', (req, res) => {
-    if(req.session.is_logined == true) {
         let RRN = req.body["RRN"];
         let name = req.body.name;
         let address = req.body.address;
@@ -52,22 +47,15 @@ router.post('/register', (req, res) => {
             }
             )
         }
-    }else{
-        res.send('로그인이 필요합니다.');
-    }
 });
 
 router.delete('/:RRN',(req,res)=>{
-    if(req.session.is_logined == true) {
         let sql = "DELETE FROM user WHERE RRN = ?";
         let params = [req.params.RRN];
         client.query(sql,params,
             (err,rows,fields)=>{
             res.send(rows);
         })
-    }else{
-        res.send('로그인이 필요합니다.');
-    }
 });
 
 router.search('/Info', (req, res) => {

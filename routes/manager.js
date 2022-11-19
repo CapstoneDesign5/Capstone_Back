@@ -7,19 +7,23 @@ router.post('/login',(req,res)=>{
     const password = body.password;
 
     client.query('select * from manager where id=?',[id],(err,data)=>{ // data : 행
-        if(id === data[0].id && password === data[0].password){
+        if(data.length == 0) {
+            console.log('아이디가 존재하지 않습니다.');
+            res.sendStatus(401);
+        }
+        else if(id === data[0].id && password === data[0].password){
             console.log('로그인 성공');
+            res.send(id);
             // 세션에 추가
-            req.session.is_logined = true;
-            req.session.id = id;
-            req.session.password = password;
-            req.session.save(function(){ // 세션 스토어에 적용하는 작업
-                console.log(req.session);
-            });
-            res.send(req.session);
+            // req.session.is_logined = true;
+            // req.session.UserId = id;
+            // req.session.save(function(){ // 세션 스토어에 적용하는 작업
+            //     console.log(req.session);
+            // });
+            // res.send(req.session);
         }else{
-            console.log('로그인 실패');
-            res.send('로그인 실패');
+            console.log('비밀번호가 틀렸습니다.');
+            res.sendStatus(401);
         }
     });
 });
@@ -47,10 +51,14 @@ router.post('/register',(req,res)=>{
 });
 
 router.get('/logout', (req, res)=>{
-    req.session.destroy(function(err){
-        console.log('로그아웃');
-    });
-    res.send('로그아웃 성공');
+    // if(req.session.is_logined) {
+    //     req.session.destroy(function(err){
+    //         console.log('로그아웃');
+    //     });
+    //     res.send('로그아웃 성공');
+    // }else {
+    //     res.sendStatus(401);
+    // }
 });
 
 module.exports = router;

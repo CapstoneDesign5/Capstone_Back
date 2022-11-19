@@ -2,7 +2,6 @@ const router = require('express').Router();
 const client = require('../db');
 
 router.post('/input',(req,res)=>{
-    if(req.session.is_logined == true) {
         const body = req.body;
         const RRN = body.RRN; //해당 사용자의 주민등록번호
         const time = body.time; //약 복용 시간
@@ -21,13 +20,9 @@ router.post('/input',(req,res)=>{
                 res.send('복용 시간 입력에 실패하였습니다.');
             }
         });
-    }else{
-        res.send('로그인이 필요합니다.');
-    }
 });
 
 router.post('/delete',(req,res)=>{
-    if(req.session.is_logined == true) {
         const body = req.body;
         const RRN = body.RRN; //해당 사용자의 주민등록번호
         const time = body.time; //약 복용 시간
@@ -44,20 +39,12 @@ router.post('/delete',(req,res)=>{
                 res.send('데이터를 찾지 못했습니다.');
             }
         });
-    }else{
-        res.send('로그인이 필요합니다.');
-    }
 });
 
 router.get('/list', (req,res)=>{
-    if(req.session.is_logined == true){
         client.query('select * from medicine_time',(err,data)=>{
             res.json(data);
         })
-    }
-    else {
-        res.send('로그인이 필요합니다.');
-    };
 });
 
 module.exports = router;
