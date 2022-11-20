@@ -61,4 +61,38 @@ router.get('/logout', (req, res)=>{
     // }
 });
 
+//관리자 정보 가져오기
+router.get('/Info/:id', (req,res)=> {
+    const {id} = req.params;
+
+    client.query(
+        'select * from manager where id=?',[id],(err,data)=> {
+            if(data.length == 0) {
+                console.log('아이디가 존재하지 않습니다.');
+                res.sendStatus(401);
+            }else{
+                res.json(data);
+            }
+    });
+});
+
+//비밀번호 변경
+router.post('/password/:id', (req,res)=> {
+    const body = req.body;
+    const {id} = req.params;
+    const newPassword = body.password;
+
+    client.query(
+        'select * from manager where id=?',[id],(err,data)=> {
+            if(data.length == 0) {
+                console.log('아이디가 존재하지 않습니다.');
+                res.sendStatus(401);
+            }else{
+                const result = client.query('update manager set password=? where id=?',[newPassword, id]);
+                console.log('비밀번호가 변경되었습니다.');
+                res.send('비밀번호가 변경되었습니다.');
+            }
+    });
+});
+
 module.exports = router;
