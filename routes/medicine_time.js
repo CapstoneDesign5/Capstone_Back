@@ -6,12 +6,12 @@ router.post('/input',(req,res)=>{
         const RRN = body.RRN; //해당 사용자의 주민등록번호
         const time = body.time; //약 복용 시간
         const date = body.date; //약 복용 날짜
-        const medecine = body.medecine; //복용해야 하는 약 이름
+        const medicine = body.medicine; //복용해야 하는 약 이름
 
         client.query('select * from medicine_time where RRN=? and time=? and date=?',[RRN,time,date],(err,data)=>{
             if(data.length == 0){ 
-                const result = client.query('insert into medicine_time(RRN, time, date, medecine) values(?,?,?,?)',[
-                    RRN, time, date, medecine
+                const result = client.query('insert into medicine_time(RRN, time, date, medicine) values(?,?,?,?)',[
+                    RRN, time, date, medicine
                 ]);
                 console.log('복용 시간이 입력되었습니다.');
                 res.send('복용 시간이 입력되었습니다.');
