@@ -95,4 +95,41 @@ router.post('/password/:id', (req,res)=> {
     });
 });
 
+//관리자 정보 수정
+router.post('/update/:id', (req,res)=> {
+    const body = req.body;
+    const {id} = req.params;
+    const name = body.name;
+    const phone_num = body.phone_num;
+    const e_mail = body.e_mail;
+    const newId = body.newId;
+
+    if(id != newId) { //아이디 변경
+        client.query(
+            'select * from manager where id=?',[newId],(err,data)=> {
+                if(data.length == 0) {
+                    const result = client.query('update manager set id=?, name=?, phone_num=?, e_mail=? where id=?',[newId, name, phone_num, e_mail, id]);
+                    console.log('관리자 정보가 변경되었습니다.');
+                    res.send('관리자 정보가 변경되었습니다.');
+                }else{
+                    console.log('이미 존재하는 아이디입니다.');
+                    res.send('이미 존재하는 아이디입니다.');
+                    res.sendStatus(401);
+                }
+        });
+    }else{ //아이디 그대로 유지
+        client.query(
+            'update manager set name=?, phone_num=?, e_mail=? where id=?',[name, phone_num, e_mail, id],(err,data)=> {
+                if(data.length == 0) {
+                    console.log('존재하지 않는 관리자 아이디입니다.');
+                    res.send('존재하지 않는 관리자 아이디입니다.');
+                    res.sendStatus(401);
+                }else{
+                    console.log('관리자 정보가 변경되었습니다.');
+                    res.send('관리자 정보가 변경되었습니다.');
+                }
+        });
+    }
+});
+
 module.exports = router;
