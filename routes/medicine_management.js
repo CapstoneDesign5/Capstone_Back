@@ -23,15 +23,18 @@ router.post('/input',(req,res)=>{
         });
 });
 
-router.delete('/delete/:medicine', (req,res)=>{
-        const {medicine} = req.params;
+router.post('/delete', (req,res)=>{
+        const body = req.body;
+        const medicine = body.medicine;
+        console.log(medicine);
         client.query('select * from medicine_time where medicine=?',[medicine],(err,data)=>{
             if(data.length == 0){ 
                 const result = client.query('delete from medicine_management where medicine=?',[medicine]);
                 res.send('삭제되었습니다.');
+                console.log('약품이 삭제되었습니다.');
             }else{  // 약 복용 시간 테이블에 저장되어 있는 데이터는 삭제 불가
                 console.log('해당 약품은 삭제할 수 없습니다.');
-                res.send('해당 약품은 삭제할 수 없습니다.');
+                res.sendStatus(401);
             }
         });
 });
