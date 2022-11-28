@@ -45,4 +45,41 @@ router.get('/list', (req,res)=>{
         })
 });
 
+//해당 약품 정보 출력
+router.post('/Info',(req,res)=>{
+    const body = req.body;
+    const medicine = body.medicine; //해당 사용자의 주민등록번호
+
+    client.query('select * from medicine_management where medicine=?',[medicine],(err,data)=>{
+        if(data.length == 0){ 
+            console.log('약품 정보가 존재하지 않습니다.');
+            res.sendStatus(401);
+        }else{  
+            res.json(data);
+        }
+    });
+});
+
+//약품 정보 변경
+router.post('/Update', (req,res)=> {
+    const body = req.body;
+    const medicine = body.medicine;
+    const NewRecommended_dose = body.recommended_dose;
+    const NewNumber_of_doses = body.number_of_doses;
+    const NewWeight = body.weight;
+    const NewMemo = body.memo;
+
+    client.query(
+        'select * from medicine_management where medicine=?',[medicine],(err,data)=> {
+            if(data.length == 0) {
+                console.log('해당 약품이 존재하지 않습니다.');
+                res.sendStatus(401);
+            }else{
+                const result = client.query('update medicine_management set recommended_dose=?, number_of_doses=?, weight=?, memo=? where medicine=?',[NewRecommended_dose, NewNumber_of_doses, NewWeight, NewMemo, medicine]);
+                console.log('약품 정보가 변경되었습니다.');
+                res.send('약품 정보가 변경되었습니다.');
+            }
+    });
+});
+
 module.exports = router;
