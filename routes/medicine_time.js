@@ -47,4 +47,11 @@ router.get('/list', (req,res)=>{
         })
 });
 
+router.post('/lockCheck',(req,res)=>{
+    const body = req.body;
+    const lock_check = body.lock_check; 
+    res.sendStatus(200);
+    console.log(lock_check);
+});
+
 module.exports = router;
