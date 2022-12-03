@@ -1,5 +1,16 @@
 const router = require('express').Router();
 const client = require('../db');
+// var SerialPort = require("serialport").SerialPort;
+// var arduinoCOMPort = "COM4";
+
+// var arduinoSerialPort = new SerialPort({
+//     path:arduinoCOMPort,
+//     baudRate: 9600
+// });
+
+// arduinoSerialPort.on('open', function() {
+//     console.log('Serial Port ' + arduinoCOMPort + ' is opend');
+// });
 
 router.post('/input',(req,res)=>{
         const body = req.body;
@@ -50,8 +61,11 @@ router.get('/list', (req,res)=>{
 router.post('/lockCheck',(req,res)=>{
     const body = req.body;
     const lock_check = body.lock_check; 
-    res.sendStatus(200);
-    console.log(lock_check);
+    if(lock_check == true) {
+        console.log(lock_check);
+        arduinoSerialPort.write("t");
+        res.sendStatus(200);
+    }
 });
 
 module.exports = router;
