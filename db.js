@@ -5,7 +5,8 @@ const client = mysql.createConnection({
     port : 3306,
     user : 'capstone',
     password : '1234',
-    database : 'capstone_design'
+    database : 'capstone_design',
+    dateStrings: 'date'
 });
 
 module.exports = client;

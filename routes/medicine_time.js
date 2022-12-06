@@ -18,11 +18,12 @@ router.post('/input',(req,res)=>{
         const time = body.time; //약 복용 시간
         const date = body.date; //약 복용 날짜
         const medicine = body.medicine; //복용해야 하는 약 이름
+        const medicine_check = body.medicine_check;
 
         client.query('select * from medicine_time where RRN=? and time=? and date=?',[RRN,time,date],(err,data)=>{
             if(data.length == 0){ 
-                const result = client.query('insert into medicine_time(RRN, time, date, medicine) values(?,?,?,?)',[
-                    RRN, time, date, medicine
+                const result = client.query('insert into medicine_time(RRN, time, date, medicine, medicine_check) values(?,?,?,?,?)',[
+                    RRN, time, date, medicine, medicine_check
                 ]);
                 console.log('복용 시간이 입력되었습니다.');
                 res.send('복용 시간이 입력되었습니다.');
@@ -45,7 +46,8 @@ router.post('/delete',(req,res)=>{
                 client.query('delete from medicine_time where RRN=? and time=? and date=?',[
                     RRN, time, date
                 ]);
-            }else{  //중복된 데이터 값은 입력 불가
+                res.sendStatus(200);
+            }else{  
                 console.log('데이터를 찾지 못했습니다.');
                 res.send('데이터를 찾지 못했습니다.');
             }
