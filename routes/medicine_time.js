@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const client = require('../db');
 // var SerialPort = require("serialport").SerialPort;
-// var arduinoCOMPort = "COM4";
+// var arduinoCOMPort = "COM6";
 
 // var arduinoSerialPort = new SerialPort({
 //     path:arduinoCOMPort,
-//     baudRate: 9600
+//     baudRate: 115200
 // });
 
 // arduinoSerialPort.on('open', function() {
@@ -60,14 +60,18 @@ router.get('/list', (req,res)=>{
         })
 });
 
+let lock_check = "";
+
 router.post('/lockCheck',(req,res)=>{
     const body = req.body;
-    const lock_check = body.lock_check; 
-    if(lock_check == true) {
-        console.log(lock_check);
-        arduinoSerialPort.write("t");
-        res.sendStatus(200);
-    }
+    lock_check = body.lock_check; 
+    console.log(lock_check);
+    res.sendStatus(200);
 });
+
+router.get('/lockCheck/get',(req,res)=>{
+    res.send(lock_check);
+});
+
 
 module.exports = router;
