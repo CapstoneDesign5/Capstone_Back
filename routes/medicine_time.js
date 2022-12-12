@@ -1,16 +1,6 @@
 const router = require('express').Router();
 const client = require('../db');
-// var SerialPort = require("serialport").SerialPort;
-// var arduinoCOMPort = "COM6";
 
-// var arduinoSerialPort = new SerialPort({
-//     path:arduinoCOMPort,
-//     baudRate: 115200
-// });
-
-// arduinoSerialPort.on('open', function() {
-//     console.log('Serial Port ' + arduinoCOMPort + ' is opend');
-// });
 
 router.post('/input',(req,res)=>{
         const body = req.body;
@@ -71,6 +61,27 @@ router.post('/lockCheck',(req,res)=>{
 
 router.get('/lockCheck/get',(req,res)=>{
     res.send(lock_check);
+});
+
+router.post('/lockCheck/post',(req,res)=>{
+    const body = req.body;
+    const RRN = body.RRN; 
+    const time = body.time; 
+    const date = body.date; 
+
+    const check = "복용";
+
+    client.query(
+        'select * from medicine_time where RRN=? and time=? and date=?',[RRN,time,date],(err,data)=> {
+            if(data.length == 0) {
+                console.log('잘못된 값입니다.');
+                res.sendStatus(401);
+            }else{
+                const result = client.query('update medicine_time set medicine_check = ? where RRN=? and time=? and date=?',[check, RRN, time, date]);
+                console.log('약을 복용하였습니다.');
+                res.sendStatus(200);
+            }
+    });
 });
 
 
